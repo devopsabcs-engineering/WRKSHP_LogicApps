@@ -56,7 +56,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2023-05-01' = {
 resource connections_azureblob_name_resource 'Microsoft.Web/connections@2016-06-01' = {
   name: connections_azureblob_name
   location: location
-  //kind: 'V2'
+  kind: 'V2'
   properties: {
     displayName: 'privatestorage'
     parameterValues: {
