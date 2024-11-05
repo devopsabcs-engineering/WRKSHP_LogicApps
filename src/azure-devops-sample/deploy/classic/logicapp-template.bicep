@@ -65,7 +65,7 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
         }
         {
           name: 'AzureFunctionsJobHost__extensionBundle__version'
-          value: '[1.*, 2.0.0)'
+          value: '[4.0.0, 5.0.0)'
         }
         {
           name: 'AzureWebJobsStorage'
@@ -73,7 +73,7 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~3'
+          value: '~4'
         }
         {
           name: 'FUNCTIONS_V2_COMPATIBILITY_MODE'
