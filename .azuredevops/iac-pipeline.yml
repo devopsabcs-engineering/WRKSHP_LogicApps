@@ -53,7 +53,7 @@ stages:
                     azureSubscription: $(serviceConnection)
                     resourceGroupName: $(resourceGroupName)
                     location: $(resourceGroupLocation)
-                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/classic/logicapp-template.json"
+                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/classic/logicapp-template.bicep"
                     overrideParameters: "
                       -location $(resourceGroupLocation)
                       -environmentName $(devEnvironment)
@@ -91,7 +91,7 @@ stages:
                     azureSubscription: $(serviceConnection)
                     resourceGroupName: $(resourceGroupName)
                     location: $(resourceGroupLocation)
-                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/connectors-template.json"
+                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/connectors-template.bicep"
                     overrideParameters: "
                       -location $(resourceGroupLocation)
                       -connections_azureblob_name $(blobConnectionName)
@@ -106,13 +106,18 @@ stages:
                     resourceGroupName: $(resourceGroupName)
                     whenLastDeploymentIsFailed: "fail"
                 - task: AzureCLI@2
+                  displayName: "Set Logic App AppSettings"
                   inputs:
                     # TODO: Fill in with the name of your Azure service connection
                     azureSubscription: "$(serviceConnection)"
                     scriptType: "bash"
                     scriptLocation: "inlineScript"
                     inlineScript: |
-                      az functionapp config appsettings set --name $(LAname) --resource-group  $(resourceGroupName) --settings "BLOB_CONNECTION_RUNTIMEURL=$(blobendpointurl)"
-                      az functionapp config appsettings set --name $(LAname) --resource-group  $(resourceGroupName) --settings "WORKFLOWS_RESOURCE_GROUP_NAME=$(resourceGroupName)"
+                      az functionapp config appsettings set --name $(LAname) \
+                        --resource-group  $(resourceGroupName) \
+                        --settings "BLOB_CONNECTION_RUNTIMEURL=$(blobendpointurl)"
+                      az functionapp config appsettings set --name $(LAname) \
+                        --resource-group  $(resourceGroupName) \
+                        --settings "WORKFLOWS_RESOURCE_GROUP_NAME=$(resourceGroupName)"
                     addSpnToEnvironment: true
                     useGlobalConfig: true
