@@ -20,6 +20,19 @@
                     "path": "/v2/Mail"
                 },
                 "runAfter": {}
+            },
+            "Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": "@body('Send_an_email_(V2)')"
+                },
+                "runAfter": {
+                    "Send_an_email_(V2)": [
+                        "SUCCEEDED"
+                    ]
+                }
             }
         },
         "contentVersion": "1.0.0.0",
