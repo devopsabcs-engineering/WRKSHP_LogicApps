@@ -53,7 +53,7 @@ stages:
                     azureSubscription: $(serviceConnection)
                     resourceGroupName: $(resourceGroupName)
                     location: $(resourceGroupLocation)
-                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/classic/logicapp-template.bicep"
+                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/classic/logicapp-template.json"
                     overrideParameters: "
                       -location $(resourceGroupLocation)
                       -environmentName $(devEnvironment)
@@ -91,7 +91,7 @@ stages:
                     azureSubscription: $(serviceConnection)
                     resourceGroupName: $(resourceGroupName)
                     location: $(resourceGroupLocation)
-                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/connectors-template.bicep"
+                    csmFile: "$(Pipeline.Workspace)/$(artifactName)/connectors-template.json"
                     overrideParameters: "
                       -location $(resourceGroupLocation)
                       -connections_azureblob_name $(blobConnectionName)

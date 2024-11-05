@@ -1,122 +1,128 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.30.23.60470",
+      "templateHash": "17447535053972850628"
+    }
+  },
   "parameters": {
-      "location": {
-          "type": "string",
-          "metadata": {
-            "description": "The datacenter to use for the deployment."
-          }
-      },
-      "logicAppSystemAssignedIdentityTenantId": {
-          "type": "string"
-      },
-      "logicAppSystemAssignedIdentityObjectId": {
-          "type": "string"
-      },
-      "sa_name": {
-          "defaultValue": "sa",
-          "type": "string"
-      }, 
-      "connections_azureblob_name": {
-          "defaultValue": "azureblob",
-          "type": "string"
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The datacenter to use for the deployment."
       }
+    },
+    "logicAppSystemAssignedIdentityTenantId": {
+      "type": "string"
+    },
+    "logicAppSystemAssignedIdentityObjectId": {
+      "type": "string"
+    },
+    "sa_name": {
+      "type": "string",
+      "defaultValue": "sa"
+    },
+    "connections_azureblob_name": {
+      "type": "string",
+      "defaultValue": "azureblob"
+    }
   },
   "variables": {
-      "sa": "[concat(toLower(parameters('sa_name')), uniqueString(resourceGroup().id))]"
+    "storageAccountName": "[format('{0}{1}', toLower(parameters('sa_name')), uniqueString(resourceGroup().id))]"
   },
   "resources": [
-      {
-          "type": "Microsoft.Storage/storageAccounts",
-          "apiVersion": "2020-08-01-preview",
-          "name": "[variables('sa')]",
-          "location": "[parameters('location')]",
-          "sku": {
-              "name": "Standard_LRS",
-              "tier": "Standard"
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2023-05-01",
+      "name": "[format('{0}/{1}/{2}', variables('storageAccountName'), 'default', 'blobs')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "publicAccess": "Container"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2023-05-01",
+      "name": "[format('{0}/{1}', variables('storageAccountName'), 'default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/connections/accessPolicies",
+      "apiVersion": "2016-06-01",
+      "name": "[format('{0}/{1}', parameters('connections_azureblob_name'), parameters('logicAppSystemAssignedIdentityObjectId'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "principal": {
+          "type": "ActiveDirectory",
+          "identity": {
+            "tenantId": "[parameters('logicAppSystemAssignedIdentityTenantId')]",
+            "objectId": "[parameters('logicAppSystemAssignedIdentityObjectId')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('connections_azureblob_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2023-05-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "Storage",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
           },
-          "kind": "Storage",
-          "properties": {
-              "networkAcls": {
-                  "bypass": "AzureServices",
-                  "virtualNetworkRules": [],
-                  "ipRules": [],
-                  "defaultAction": "Allow"
-              },
-              "supportsHttpsTrafficOnly": true,
-              "encryption": {
-                  "services": {
-                      "file": {
-                          "keyType": "Account",
-                          "enabled": true
-                      },
-                      "blob": {
-                          "keyType": "Account",
-                          "enabled": true
-                      }
-                  },
-                  "keySource": "Microsoft.Storage"
-              }
-          }
-      },
-      {
-          "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-          "apiVersion": "2018-02-01",
-          "name": "[concat(variables('sa'), '/default/blobs')]",
-          "dependsOn": [
-              "[resourceId('Microsoft.Storage/storageAccounts', variables('sa'))]"
-          ],
-          "properties": {
-              "defaultEncryptionScope": "$account-encryption-key",
-              "denyEncryptionScopeOverride": false,
-              "publicAccess": "Container"
-          }
-      },
-      {
-          "type": "Microsoft.Web/connections",
-          "apiVersion": "2016-06-01",
-          "name": "[parameters('connections_azureblob_name')]",
-          "location": "[parameters('location')]",
-          "kind": "V2",            
-          "dependsOn": [
-              "[resourceId('Microsoft.Storage/storageAccounts', variables('sa'))]"
-          ],
-          "properties": {
-              "displayName": "privatestorage",
-              "parameterValues": {
-                  "accountName": "[variables('sa')]", 
-                  "accessKey": "[concat(listKeys(concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', variables('sa')),'2019-06-01').keys[0].value)]"
-              },
-              "api": {
-                  "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('location'),'/managedApis/azureblob')]"
-              }
-          }
-      },
-      {
-          "type": "Microsoft.Web/connections/accessPolicies",
-          "apiVersion": "2016-06-01",
-          "name": "[concat(parameters('connections_azureblob_name'),'/',parameters('logicAppSystemAssignedIdentityObjectId'))]",
-          "location": "[parameters('location')]",
-          "dependsOn": [
-              "[resourceId('Microsoft.Web/connections', parameters('connections_azureblob_name'))]"
-          ],
-          "properties": {
-              "principal": {
-                  "type": "ActiveDirectory",
-                  "identity": {
-                      "tenantId": "[parameters('logicAppSystemAssignedIdentityTenantId')]",
-                      "objectId": "[parameters('logicAppSystemAssignedIdentityObjectId')]"
-                  }
-              }
-          }
+          "keySource": "Microsoft.Storage"
+        }
       }
- 
-  ],
-  "outputs": {
-    "blobendpointurl": {
-      "type": "string",
-      "value": "[reference(resourceId('Microsoft.Web/connections', parameters('connections_azureblob_name')),'2016-06-01', 'full').properties.connectionRuntimeUrl]"
+    },
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('connections_azureblob_name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "displayName": "privatestorage",
+        "parameterValues": {
+          "accountName": "[variables('storageAccountName')]",
+          "accessKey": "[concat(listKeys(format('{0}/providers/Microsoft.Storage/storageAccounts/{1}', resourceGroup().id, variables('storageAccountName')), '2023-05-01').keys[0].value)]"
+        },
+        "api": {
+          "id": "[resourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'azureblob')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ]
     }
-  }
+  ]
 }
