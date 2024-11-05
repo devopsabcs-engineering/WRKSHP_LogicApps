@@ -91,4 +91,4 @@ resource connections_azureblob_name_resource 'Microsoft.Web/connections@2016-06-
   }
 }
 
-//output blobendpointurl string = connections_azureblob_name_resource.properties.connectionRuntimeUrl
+output blobendpointurl string = connections_azureblob_name_resource.properties.connectionRuntimeUrl
