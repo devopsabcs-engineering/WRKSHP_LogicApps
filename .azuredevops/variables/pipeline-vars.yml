@@ -4,7 +4,7 @@ variables:
   - name: projectName
     value: "logicappsample"
   - name: suffix
-    value: "dev"
+    value: "dev001"
 
   # Resource Group
   - name: resourceGroupLocation
