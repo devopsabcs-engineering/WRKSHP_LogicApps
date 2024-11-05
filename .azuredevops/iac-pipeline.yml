@@ -7,6 +7,8 @@ variables:
   value: deploy_artifacts
 - name: devEnvironment
   value: dev
+- name: vmImage
+  value: ubuntu-latest
 
 stages:
 - stage: Builds
@@ -14,7 +16,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: $(vmImage)
     steps:
     - task: CopyFiles@2
       displayName: 'Copy ARM templates'
