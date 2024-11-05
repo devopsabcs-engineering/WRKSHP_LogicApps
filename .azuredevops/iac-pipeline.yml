@@ -77,6 +77,14 @@ stages:
                     ARM_OUTPUTS: $(LogicAppArmOutputs)
                 - script: echo $(logicAppSystemAssignedIdentityObjectId)
                   displayName: "Log logicAppSystemAssignedIdentityObjectId"
+                # lAname is the name of the logic app
+                - bash: |
+                    echo "##vso[task.setvariable variable=lAname]$(echo $ARM_OUTPUTS | jq -r '.lAname.value')"
+                  displayName: "Parse ARM deploymentOutputs | bash"
+                  env:
+                    ARM_OUTPUTS: $(LogicAppArmOutputs)
+                - script: echo $(lAname)
+                  displayName: "Log lAname"
                 - task: ARM Outputs@6
                   enabled: false
                   displayName: "ARM Outputs"
