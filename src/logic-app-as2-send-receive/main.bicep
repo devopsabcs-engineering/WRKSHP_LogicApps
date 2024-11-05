@@ -63,7 +63,7 @@ resource fabrikamIntegrationAccount 'Microsoft.Logic/integrationAccounts@2019-05
   location: location
 }
 
-resource contosoIntegrationAccountName_Contoso 'Microsoft.Logic/integrationAccounts/partners@2016-06-01' = {
+resource contosoIntegrationAccountName_Contoso 'Microsoft.Logic/integrationAccounts/partners@2019-05-01' = {
   parent: contosoIntegrationAccount
   properties: {
     partnerType: 'B2B'
@@ -85,7 +85,7 @@ resource contosoIntegrationAccountName_Contoso 'Microsoft.Logic/integrationAccou
   name: 'Contoso'
 }
 
-resource fabrikamIntegrationAccountName_Contoso 'Microsoft.Logic/integrationAccounts/partners@2016-06-01' = {
+resource fabrikamIntegrationAccountName_Contoso 'Microsoft.Logic/integrationAccounts/partners@2019-05-01' = {
   parent: fabrikamIntegrationAccount
   properties: {
     partnerType: 'B2B'
@@ -107,7 +107,7 @@ resource fabrikamIntegrationAccountName_Contoso 'Microsoft.Logic/integrationAcco
   name: 'Contoso'
 }
 
-resource contosoIntegrationAccountName_FabrikamSales 'Microsoft.Logic/integrationAccounts/partners@2016-06-01' = {
+resource contosoIntegrationAccountName_FabrikamSales 'Microsoft.Logic/integrationAccounts/partners@2019-05-01' = {
   parent: contosoIntegrationAccount
   properties: {
     partnerType: 'B2B'
@@ -129,7 +129,7 @@ resource contosoIntegrationAccountName_FabrikamSales 'Microsoft.Logic/integratio
   name: 'FabrikamSales'
 }
 
-resource fabrikamIntegrationAccountName_FabrikamSales 'Microsoft.Logic/integrationAccounts/partners@2016-06-01' = {
+resource fabrikamIntegrationAccountName_FabrikamSales 'Microsoft.Logic/integrationAccounts/partners@2019-05-01' = {
   parent: fabrikamIntegrationAccount
   properties: {
     partnerType: 'B2B'
@@ -151,7 +151,7 @@ resource fabrikamIntegrationAccountName_FabrikamSales 'Microsoft.Logic/integrati
   name: 'FabrikamSales'
 }
 
-resource contosoIntegrationAccountName_FabrikamFinance 'Microsoft.Logic/integrationAccounts/partners@2016-06-01' = {
+resource contosoIntegrationAccountName_FabrikamFinance 'Microsoft.Logic/integrationAccounts/partners@2019-05-01' = {
   parent: contosoIntegrationAccount
   properties: {
     partnerType: 'B2B'
@@ -173,7 +173,7 @@ resource contosoIntegrationAccountName_FabrikamFinance 'Microsoft.Logic/integrat
   name: 'FabrikamFinance'
 }
 
-resource fabrikamIntegrationAccountName_FabrikamFinance 'Microsoft.Logic/integrationAccounts/partners@2016-06-01' = {
+resource fabrikamIntegrationAccountName_FabrikamFinance 'Microsoft.Logic/integrationAccounts/partners@2019-05-01' = {
   parent: fabrikamIntegrationAccount
   properties: {
     partnerType: 'B2B'
@@ -195,7 +195,7 @@ resource fabrikamIntegrationAccountName_FabrikamFinance 'Microsoft.Logic/integra
   name: 'FabrikamFinance'
 }
 
-resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/integrationAccounts/agreements@2016-06-01' = {
+resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/integrationAccounts/agreements@2019-05-01' = {
   parent: contosoIntegrationAccount
   properties: {
     hostPartner: 'Contoso'
@@ -226,22 +226,22 @@ resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/in
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: false
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: false
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -263,7 +263,7 @@ resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/in
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -290,22 +290,22 @@ resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/in
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: false
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: false
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -327,7 +327,7 @@ resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/in
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -345,7 +345,7 @@ resource contosoIntegrationAccountName_Contoso_FabrikamSales 'Microsoft.Logic/in
   name: 'Contoso-FabrikamSales'
 }
 
-resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/integrationAccounts/agreements@2016-06-01' = {
+resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/integrationAccounts/agreements@2019-05-01' = {
   parent: fabrikamIntegrationAccount
   properties: {
     hostPartner: 'FabrikamSales'
@@ -376,22 +376,22 @@ resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/i
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: false
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: false
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -413,7 +413,7 @@ resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/i
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -440,22 +440,22 @@ resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/i
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: true
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: true
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -477,7 +477,7 @@ resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/i
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -495,7 +495,7 @@ resource fabrikamIntegrationAccountName_FabrikamSales_Contoso 'Microsoft.Logic/i
   name: 'FabrikamSales-Contoso'
 }
 
-resource contosoIntegrationAccountName_Contoso_FabrikamFinance 'Microsoft.Logic/integrationAccounts/agreements@2016-06-01' = {
+resource contosoIntegrationAccountName_Contoso_FabrikamFinance 'Microsoft.Logic/integrationAccounts/agreements@2019-05-01' = {
   parent: contosoIntegrationAccount
   properties: {
     hostPartner: 'Contoso'
@@ -526,22 +526,22 @@ resource contosoIntegrationAccountName_Contoso_FabrikamFinance 'Microsoft.Logic/
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: false
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: false
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -563,7 +563,7 @@ resource contosoIntegrationAccountName_Contoso_FabrikamFinance 'Microsoft.Logic/
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -590,22 +590,22 @@ resource contosoIntegrationAccountName_Contoso_FabrikamFinance 'Microsoft.Logic/
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: false
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: false
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -627,7 +627,7 @@ resource contosoIntegrationAccountName_Contoso_FabrikamFinance 'Microsoft.Logic/
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -762,7 +762,6 @@ resource contosoAS2ReceiveLogicApp 'Microsoft.Logic/workflows@2019-05-01' = {
     }
   }
   dependsOn: [
-
     contoso_AS2_Connection
   ]
 }
@@ -825,9 +824,7 @@ resource fabrikamSalesAS2SendLogicApp 'Microsoft.Logic/workflows@2019-05-01' = {
     }
   }
   dependsOn: [
-
     fabrikam_AS2_Connection
-
   ]
 }
 
@@ -909,9 +906,7 @@ resource fabrikamFinanceAS2SendLogicApp 'Microsoft.Logic/workflows@2019-05-01' =
     }
   }
   dependsOn: [
-
     fabrikam_AS2_Connection
-
   ]
 }
 
@@ -985,13 +980,12 @@ resource fabrikamFinanceAS2ReceiveMDNLogicApp 'Microsoft.Logic/workflows@2019-05
     }
   }
   dependsOn: [
-
     fabrikam_AS2_Connection
     contosoAS2ReceiveLogicApp
   ]
 }
 
-resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic/integrationAccounts/agreements@2016-06-01' = {
+resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic/integrationAccounts/agreements@2019-05-01' = {
   parent: fabrikamIntegrationAccount
   properties: {
     hostPartner: 'FabrikamFinance'
@@ -1022,22 +1016,22 @@ resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: false
-              signMdn: false
-              sendMdnAsynchronously: false
+              needMDN: false
+              signMDN: false
+              sendMDNAsynchronously: false
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -1059,7 +1053,7 @@ resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -1086,23 +1080,23 @@ resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic
               unfoldHttpHeaders: false
             }
             mdnSettings: {
-              needMdn: true
-              signMdn: false
-              sendMdnAsynchronously: true
+              needMDN: true
+              signMDN: false
+              sendMDNAsynchronously: true
               receiptDeliveryUrl: fabrikamFinanceAS2ReceiveMDNLogicApp.listCallbackUrl().value
               dispositionNotificationTo: 'http://localhost'
-              signOutboundMdnIfOptional: false
-              sendInboundMdnToMessageBox: true
+              signOutboundMDNIfOptional: false
+              sendInboundMDNToMessageBox: true
               micHashingAlgorithm: 'SHA2256'
             }
             securitySettings: {
               overrideGroupSigningCertificate: false
-              enableNrrForInboundEncodedMessages: false
-              enableNrrForInboundDecodedMessages: false
-              enableNrrForOutboundMdn: false
-              enableNrrForOutboundEncodedMessages: false
-              enableNrrForOutboundDecodedMessages: false
-              enableNrrForInboundMdn: false
+              enableNRRForInboundEncodedMessages: false
+              enableNRRForInboundDecodedMessages: false
+              enableNRRForOutboundMDN: false
+              enableNRRForOutboundEncodedMessages: false
+              enableNRRForOutboundDecodedMessages: false
+              enableNRRForInboundMDN: false
             }
             validationSettings: {
               overrideMessageProperties: false
@@ -1124,7 +1118,7 @@ resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic
             }
             errorSettings: {
               suspendDuplicateMessage: false
-              resendIfMdnNotReceived: false
+              resendIfMDNNotReceived: false
             }
           }
           senderBusinessIdentity: {
@@ -1142,7 +1136,7 @@ resource fabrikamIntegrationAccountName_FabrikamFinance_Contoso 'Microsoft.Logic
   name: 'FabrikamFinance-Contoso'
 }
 
-resource contoso_AS2_Connection 'Microsoft.Web/connections@2018-07-01-preview' = {
+resource contoso_AS2_Connection 'Microsoft.Web/connections@2016-06-01' = {
   name: contoso_AS2_Connection_Name
   location: location
   properties: {
@@ -1157,7 +1151,7 @@ resource contoso_AS2_Connection 'Microsoft.Web/connections@2018-07-01-preview' =
   }
 }
 
-resource fabrikam_AS2_Connection 'Microsoft.Web/connections@2018-07-01-preview' = {
+resource fabrikam_AS2_Connection 'Microsoft.Web/connections@2016-06-01' = {
   name: fabrikam_AS2_Connection_Name
   location: location
   properties: {
