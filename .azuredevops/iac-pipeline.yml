@@ -63,13 +63,28 @@ stages:
                       -storageName $(storageName)"
                     deploymentMode: $(deploymentMode)
                     deploymentOutputs: "LogicAppArmOutputs"
+                - bash: |
+                    echo "##vso[task.setvariable variable=logicAppSystemAssignedIdentityTenantId]$(echo $ARM_OUTPUTS | jq -r '.logicAppSystemAssignedIdentityTenantId.value')"
+                  displayName: "Parse ARM deploymentOutputs | bash"
+                  env:
+                    ARM_OUTPUTS: $(LogicAppArmOutputs)
+                - script: echo $(logicAppSystemAssignedIdentityTenantId)
+                  displayName: "Log logicAppSystemAssignedIdentityTenantId"
+                - bash: |
+                    echo "##vso[task.setvariable variable=logicAppSystemAssignedIdentityObjectId]$(echo $ARM_OUTPUTS | jq -r '.logicAppSystemAssignedIdentityObjectId.value')"
+                  displayName: "Parse ARM deploymentOutputs | bash"
+                  env:
+                    ARM_OUTPUTS: $(LogicAppArmOutputs)
+                - script: echo $(logicAppSystemAssignedIdentityObjectId)
+                  displayName: "Log logicAppSystemAssignedIdentityObjectId"
                 - task: ARM Outputs@6
+                  enabled: false
                   displayName: "ARM Outputs"
                   inputs:
-                    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-                    ConnectedServiceNameARM: '$(serviceConnection)'
-                    resourceGroupName: '$(resourceGroupName)'
-                    whenLastDeploymentIsFailed: 'fail'
+                    ConnectedServiceNameSelector: "ConnectedServiceNameARM"
+                    ConnectedServiceNameARM: "$(serviceConnection)"
+                    resourceGroupName: "$(resourceGroupName)"
+                    whenLastDeploymentIsFailed: "fail"
                 - task: AzureResourceGroupDeployment@2
                   displayName: "Deploy Connectors"
                   inputs:
@@ -93,7 +108,7 @@ stages:
                 - task: AzureCLI@2
                   inputs:
                     # TODO: Fill in with the name of your Azure service connection
-                    azureSubscription: ""
+                    azureSubscription: "$(serviceConnection)"
                     scriptType: "bash"
                     scriptLocation: "inlineScript"
                     inlineScript: |
