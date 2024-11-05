@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.30.23.60470",
-      "templateHash": "4661095742742255740"
+      "templateHash": "11270672382421811038"
     }
   },
   "parameters": {
@@ -111,6 +111,7 @@
       "apiVersion": "2016-06-01",
       "name": "[parameters('connections_azureblob_name')]",
       "location": "[parameters('location')]",
+      "kind": "V2",
       "properties": {
         "displayName": "privatestorage",
         "parameterValues": {
