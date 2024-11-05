@@ -78,3 +78,14 @@ Learn more about Azure Logic Apps:
 
 * [Azure Logic Apps](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview)
 * [B2B Processing capabilities in Logic Apps](https://docs.microsoft.com/azure/logic-apps/logic-apps-enterprise-integration-overview)
+
+# Troubleshooting
+
+1. http not found - change
+```
+https://prod-23.canadacentral.logic.azure.com:443/workflows/cb69e987ed5f4d51aeb4da6e9e53f827?api-version=2019-05-01&sp=%2F%2F%2A&sv=1.0&sig=jISdrLO_xZjIFttzzHKePOsAWdG4wq3zelW6sVgQRpE
+```
+to
+```
+https://prod-23.canadacentral.logic.azure.com:443/workflows/cb69e987ed5f4d51aeb4da6e9e53f827/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RQ7K_keamXt9WlYERkpUD1WTImg0MnltaN7ptaCgzFg
+```
