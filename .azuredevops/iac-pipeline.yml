@@ -98,13 +98,22 @@ stages:
                       -logicAppSystemAssignedIdentityTenantId $(logicAppSystemAssignedIdentityTenantId)
                       -logicAppSystemAssignedIdentityObjectId $(logicAppSystemAssignedIdentityObjectId)"
                     deploymentMode: $(deploymentMode)
+                    deploymentOutputs: "ConnectorsArmOutputs"
                 - task: ARM Outputs@6
+                  enabled: false
                   displayName: "ARM Outputs Connections"
                   inputs:
                     ConnectedServiceNameSelector: "ConnectedServiceNameARM"
                     ConnectedServiceNameARM: $(serviceConnection)
                     resourceGroupName: $(resourceGroupName)
                     whenLastDeploymentIsFailed: "fail"
+                - bash: |
+                    echo "##vso[task.setvariable variable=blobendpointurl]$(echo $ARM_OUTPUTS | jq -r '.blobendpointurl.value')"
+                  displayName: "Parse ARM deploymentOutputs | bash"
+                  env:
+                    ARM_OUTPUTS: $(ConnectorsArmOutputs)
+                - script: echo $(blobendpointurl)
+                  displayName: "Log blobendpointurl"
                 - task: AzureCLI@2
                   displayName: "Set Logic App AppSettings"
                   inputs:
