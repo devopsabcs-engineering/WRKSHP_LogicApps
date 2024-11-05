@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "logic_app_vscode_from_scratch": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7261",
+      "launchBrowser": false
+    }
+  }
+}
