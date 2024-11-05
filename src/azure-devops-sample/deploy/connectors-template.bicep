@@ -13,7 +13,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   sku: {
     name: 'Standard_LRS'
   }
-  kind: 'Storage'
+  kind: 'StorageV2'
   properties: {
     networkAcls: {
       bypass: 'AzureServices'
