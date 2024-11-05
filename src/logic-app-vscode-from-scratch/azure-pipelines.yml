@@ -1,0 +1,15 @@
+resources:
+  - repo: self
+pool:
+  name: Hosted
+steps:
+  - task: AzureResourceGroupDeployment@2
+    displayName: >-
+      Azure Deployment: Create Or Update Resource Group action on
+      rg-some-logic-005
+    inputs:
+      azureSubscription: someServiceConn
+      csmFile: csm-file.json
+      csmParametersFile: csm-parameters-file.json
+      location: Canada Central
+      resourceGroupName: rg-some-logic-005
