@@ -66,10 +66,10 @@ stages:
                 - task: ARM Outputs@6
                   displayName: "ARM Outputs"
                   inputs:
-                    ConnectedServiceNameSelector: "ConnectedServiceNameARM"
-                    ConnectedServiceNameARM: $(serviceConnection)
-                    resourceGroupName: $(resourceGroupName)
-                    whenLastDeploymentIsFailed: "fail"
+                    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+                    ConnectedServiceNameARM: '$(serviceConnection)'
+                    resourceGroupName: '$(resourceGroupName)'
+                    whenLastDeploymentIsFailed: 'fail'
                 - task: AzureResourceGroupDeployment@2
                   displayName: "Deploy Connectors"
                   inputs:
