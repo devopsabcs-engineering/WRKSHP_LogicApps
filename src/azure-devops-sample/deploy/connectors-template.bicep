@@ -67,7 +67,8 @@ resource connections_azureblob_name_resource 'Microsoft.Web/connections@2016-06-
       ).keys[0].value)
     }
     api: {
-      id: resourceId('Microsoft.Web/locations/managedApis', location, 'azureblob')
+      //id: resourceId('Microsoft.Web/locations/managedApis', location, 'azureblob')
+      id: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
     }
   }
   dependsOn: [

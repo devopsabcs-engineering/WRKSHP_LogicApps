@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.30.23.60470",
-      "templateHash": "16401058436786565653"
+      "templateHash": "4661095742742255740"
     }
   },
   "parameters": {
@@ -118,7 +118,7 @@
           "accessKey": "[concat(listKeys(format('{0}/providers/Microsoft.Storage/storageAccounts/{1}', resourceGroup().id, variables('storageAccountName')), '2023-05-01').keys[0].value)]"
         },
         "api": {
-          "id": "[resourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'azureblob')]"
+          "id": "[format('/subscriptions/{0}/providers/Microsoft.Web/locations/{1}/managedApis/azureblob', subscription().subscriptionId, parameters('location'))]"
         }
       },
       "dependsOn": [
