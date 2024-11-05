@@ -87,7 +87,7 @@
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
         "siteConfig": {
-          "netFrameworkVersion": "v4.6",
+          "netFrameworkVersion": "v4.8",
           "appSettings": [
             {
               "name": "APP_KIND",
