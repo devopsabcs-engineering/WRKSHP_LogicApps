@@ -22,7 +22,8 @@ stages:
   - stage: DeployInfra
     displayName: "Deploy Infrastructure"
     jobs:
-      - deployment: Deploy
+      - deployment: DeployInfraJob
+        displayName: "Deploy Infrastructure Job"
         pool:
           vmImage: $(vmImage)
         environment: $(devEnvironment)
@@ -35,9 +36,9 @@ stages:
                 - task: AzureCLI@2
                   displayName: "Azure Login"
                   inputs:
-                    azureSubscription: '$(serviceConnection)'
-                    scriptType: 'pscore'
-                    scriptLocation: 'inlineScript'
+                    azureSubscription: "$(serviceConnection)"
+                    scriptType: "pscore"
+                    scriptLocation: "inlineScript"
                     inlineScript: |
                       az account show
                       az group create --name $(resourceGroupName) `
