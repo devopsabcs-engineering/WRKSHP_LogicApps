@@ -201,6 +201,18 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
           value: '~18'
         }
+        {
+          name: 'WORKFLOWS_SUBSCRIPTION_ID'
+          value: subscription().subscriptionId
+        }
+        {
+          name: 'WORKFLOWS_RESOURCE_GROUP_NAME'
+          value: resourceGroup().name
+        }
+        {
+          name: 'WORKFLOWS_LOCATION_NAME'
+          value: location
+        }
         // {
         //   name: 'FUNCTIONS_V2_COMPATIBILITY_MODE'
         //   value: 'true'
