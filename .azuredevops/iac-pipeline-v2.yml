@@ -30,9 +30,9 @@ variables:
   - name: deploymentName
     value: "iac-deployment-${{ variables.instanceNumber }}"
   - name: workingDirectory
-    value: "src/logic-vvihbnryoetdu"
-  #- name: webAppName
-  #  value: "logic-vvihbnryoetdu" # logic app name - get this from outputs of infra deployment
+    value: "src/logic-vvihbnryoetdu" # path to the project
+  - name: artifactName
+    value: "drop"
 
 pool:
   vmImage: $(vmImage)
@@ -104,7 +104,7 @@ stages:
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
               replaceExistingArchive: true
           - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-            artifact: drop
+            artifact: $(artifactName)
   - stage: DeployInfra
     displayName: "Deploy Infrastructure ${{ parameters.instanceNumber }}"
     dependsOn: Build
@@ -179,9 +179,9 @@ stages:
                     Write-Host $(retrieveLogicAppName.webAppName)
                   displayName: "Echo Logic App Name"
                 # echo the logic app name
-                - powershell: |
-                    Write-Host $(webAppName)
-                  displayName: "Echo Logic App Name Again"
+                #- powershell: |
+                #    Write-Host $(webAppName)
+                #  displayName: "Echo Logic App Name Again"
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
@@ -189,7 +189,7 @@ stages:
                     azureSubscription: "$(serviceConnection)"
                     appType: "webApp"
                     WebAppName: "$(retrieveLogicAppName.webAppName)"
-                    packageForLinux: "$(Pipeline.Workspace)/drop/*.zip"
+                    packageForLinux: "$(Pipeline.Workspace)/$(artifactName)/*.zip"
                     enableCustomDeployment: true
                     DeploymentType: "webDeploy"
                     TakeAppOfflineFlag: false
