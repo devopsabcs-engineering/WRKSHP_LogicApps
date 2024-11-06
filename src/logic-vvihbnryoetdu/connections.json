@@ -2,15 +2,15 @@
   "managedApiConnections": {
     "office365": {
       "api": {
-        "id": "/subscriptions/64c3d212-40ed-4c6d-a825-6adfbdf25dad/providers/Microsoft.Web/locations/canadacentral/managedApis/office365"
+        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/providers/Microsoft.Web/locations/@appsetting('WORKFLOWS_LOCATION_NAME')/managedApis/office365"
       },
       "connection": {
-        "id": "/subscriptions/64c3d212-40ed-4c6d-a825-6adfbdf25dad/resourceGroups/rg-iac-pipeline-006/providers/Microsoft.Web/connections/office365"
+        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/office365"
       },
       "authentication": {
         "type": "ManagedServiceIdentity"
       },
-      "connectionRuntimeUrl": "https://4a335b89e4ad77a5.04.common.logic-canadacentral.azure-apihub.net/apim/office365/117d098c77a4419883cb2bbc070330dc"
+      "connectionRuntimeUrl": "@appsetting('WORKFLOWS_CONNECTION_RUNTIME_URL')"
     }
   },
   "serviceProviderConnections": {}
