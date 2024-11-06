@@ -157,13 +157,33 @@ stages:
                 - powershell: |
                     Write-Host $(webAppName)
                   displayName: "Echo Logic App Name Again"
+                - task: AzureCLI@2
+                  displayName: "Retrieve Logic App Name"
+                  name: retrieveLogicAppName
+                  inputs:
+                    azureSubscription: "$(serviceConnection)"
+                    scriptType: "pscore"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      az account show                      
+                      # get logic app name
+                      $logicAppName = az deployment group show --resource-group $(resourceGroupName) `
+                        --name $(deploymentName) `
+                        --query properties.outputs.logicAppName.value `
+                        -o tsv
+                      echo $logicAppName
+                      Write-Host "##vso[task.setvariable variable=webAppName;isOutput=true]$logicAppName"
+                # echo the logic app name
+                - powershell: |
+                    Write-Host $(retrieveLogicAppName.webAppName)
+                  displayName: "Echo Logic App Name"
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
                     ConnectionType: "AzureRM"
                     azureSubscription: "$(serviceConnection)"
                     appType: "webApp"
-                    WebAppName: "$(webAppName)"
+                    WebAppName: "$(retrieveLogicAppName.webAppName)"
                     packageForLinux: "$(Pipeline.Workspace)/drop/*.zip"
                     enableCustomDeployment: true
                     DeploymentType: "webDeploy"
