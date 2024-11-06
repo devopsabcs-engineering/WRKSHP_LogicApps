@@ -1,0 +1,49 @@
+trigger: none
+
+pr: none
+
+variables:
+  - name: devEnvironment
+    value: WRKSHP_IS_LogicApp_dev
+  - name: vmImage
+    value: ubuntu-latest
+  - name: serviceConnection
+    value: "WRKSHP_IS_ME-MngEnvMCAP675646-emknafo-1 (64c3d212-40ed-4c6d-a825-6adfbdf25dad)-4734"
+  - name: resourceGroupName
+    value: "rg-iac-pipeline-006"
+  - name: resourceGroupLocation
+    value: "canadacentral"
+  - name: templateFile
+    value: infra/ExportedTemplate-rg-logic-vsc-003/template.bicep
+  - name: deploymentName
+    value: "iac-deployment-006"
+
+stages:
+  - stage: DeployInfra
+    displayName: "Deploy Infrastructure"
+    jobs:
+      - deployment: Deploy
+        pool:
+          vmImage: $(vmImage)
+        environment: $(devEnvironment)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                # azure cli task to login to azure
+                - task: AzureCLI@2
+                  displayName: "Azure Login"
+                  inputs:
+                    azureSubscription: $(serviceConnection)
+                    scriptType: ps
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      az account show
+                      az group create --name $(resourceGroupName) `
+                        --location $(resourceGroupLocation)
+                      # deploy
+                      az deployment group create --resource-group $(resourceGroupName) `
+                        --template-file $(templateFile) `
+                        --location $(resourceGroupLocation) `
+                        --name $(deploymentName)

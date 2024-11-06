@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_logic_vsc_003_name": {
+            "value": null
+        },
+        "connections_office365_name": {
+            "value": null
+        },
+        "components_logicvsc003_name": {
+            "value": null
+        },
+        "serverfarms_asp_logic_vsc_003_name": {
+            "value": null
+        },
+        "storageAccounts_logicvsc003_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___logicvsc003_name": {
+            "value": null
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "value": null
+        }
+    }
+}
