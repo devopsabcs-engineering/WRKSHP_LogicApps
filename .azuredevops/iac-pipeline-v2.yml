@@ -4,28 +4,30 @@ trigger:
 pr: none
 
 variables:
+  - name: buildConfiguration
+    value: "Release"
+  - name: instanceNumber
+    value: "006"
   - name: devEnvironment
-    value: WRKSHP_IS_LogicApp_dev_006
+    value: WRKSHP_IS_LogicApp_dev_${{ variables.instanceNumber }}
   - name: devEnvironmentApp
-    value: WRKSHP_IS_LogicApp_dev_006_logic-app
+    value: WRKSHP_IS_LogicApp_dev_${{ variables.instanceNumber }}_logic-app
   - name: vmImage
     value: windows-latest
   - name: serviceConnection
     value: "WRKSHP_IS_ME-MngEnvMCAP675646-emknafo-1 (64c3d212-40ed-4c6d-a825-6adfbdf25dad)-4734"
   - name: resourceGroupName
-    value: "rg-iac-pipeline-006"
+    value: "rg-iac-pipeline-${{ variables.instanceNumber }}"
   - name: resourceGroupLocation
     value: "canadacentral"
   - name: templateFile
     value: infra/main.bicep
   - name: deploymentName
-    value: "iac-deployment-006"
-  #- name: projectFile
-  #  value: "src/logic-vvihbnryoetdu/logic-vvihbnryoetdu.csproj"
+    value: "iac-deployment-${{ variables.instanceNumber }}"
   - name: workingDirectory
     value: "src/logic-vvihbnryoetdu"
   - name: webAppName
-    value: "logic-vvihbnryoetdu"
+    value: "logic-vvihbnryoetdu" # logic app name - get this from outputs of infra deployment
 
 pool:
   vmImage: $(vmImage)
@@ -113,6 +115,7 @@ stages:
                 # azure cli task to login to azure
                 - task: AzureCLI@2
                   displayName: "deploy infrastructure using bicep"
+                  name: deployInfraWebApp
                   inputs:
                     azureSubscription: "$(serviceConnection)"
                     scriptType: "pscore"
@@ -125,6 +128,16 @@ stages:
                       az deployment group create --resource-group $(resourceGroupName) `
                         --template-file $(templateFile) `
                         --name $(deploymentName)
+                      # get logic app name
+                      $logicAppName = az deployment group show --resource-group $(resourceGroupName) `
+                        --name $(deploymentName) `
+                        --query properties.outputs.logicAppName.value `
+                        -o tsv
+                      echo $logicAppName
+                      echo "##vso[task.setvariable variable=webAppName;isOutput=true]$logicAppName"
+                # echo the logic app name
+                - script: echo $(deployInfraWebApp.outputs['webAppName'])
+                  displayName: "Echo Logic App Name"
   - stage: DeployLogicApp
     displayName: "Deploy Logic App"
     dependsOn: DeployInfra

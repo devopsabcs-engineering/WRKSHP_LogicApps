@@ -320,3 +320,5 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
     }
   }
 }
+
+output logicAppName string = logicApp.name
