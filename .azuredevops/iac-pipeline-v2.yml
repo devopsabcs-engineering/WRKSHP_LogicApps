@@ -137,15 +137,6 @@ stages:
             deploy:
               steps:
                 - checkout: self
-                # download artifact then deploy to standard logic app - app service
-                - task: DownloadBuildArtifacts@0
-                  enabled: false
-                  displayName: "Download Artifact"
-                  inputs:
-                    buildType: "current"
-                    downloadType: "single"
-                    artifactName: "logic-app"
-                    downloadPath: "$(System.ArtifactsDirectory)"
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
@@ -153,7 +144,7 @@ stages:
                     azureSubscription: "$(serviceConnection)"
                     appType: "webApp"
                     WebAppName: "$(webAppName)"
-                    packageForLinux: "$(System.DefaultWorkingDirectory)/**/*.zip"
+                    packageForLinux: "$(Pipeline.Workspace)/drop/*.zip"
                     enableCustomDeployment: true
                     DeploymentType: "webDeploy"
                     TakeAppOfflineFlag: false
