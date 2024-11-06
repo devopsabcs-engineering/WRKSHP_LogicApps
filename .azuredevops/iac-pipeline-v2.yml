@@ -149,19 +149,11 @@ stages:
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
-                    ConnectionType: "AzureRM"
-                    azureSubscription: "$(serviceConnection)"
-                    appType: "webApp"
-                    WebAppName: "$(webAppName)"
-                    package: "$(Pipeline.Workspace)/logic-app"
+                    ConnectionType: 'AzureRM'
+                    azureSubscription: '$(serviceConnection)'
+                    appType: 'webApp'
+                    WebAppName: '$(webAppName)'
+                    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
                     enableCustomDeployment: true
-                    deploymentMethod: "auto"
-                    ResourceGroupName: "$(resourceGroupName)"
-                    SlotName: "production"
+                    DeploymentType: 'webDeploy'
                     TakeAppOfflineFlag: false
-                    JSONFiles: "**/appsettings.json"
-                    AppSettings: "-ASPNETCORE_ENVIRONMENT Development"
-                    ScriptType: "Inline Script"
-                    Inline: |
-                      az webapp config appsettings set --name logic-app-$(Build.BuildId) --resource-group $(resourceGroupName) --settings ASPNETCORE_ENVIRONMENT=Development
-                      az webapp restart --name logic-app-$(Build.BuildId) --resource-group $(resourceGroupName)
