@@ -106,11 +106,11 @@ stages:
           - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
             artifact: drop
   - stage: DeployInfra
-    displayName: "Deploy Infrastructure"
+    displayName: "Deploy Infrastructure ${{ parameters.instanceNumber }}"
     dependsOn: Build
     jobs:
       - deployment: DeployInfraJob
-        displayName: "Deploy Infrastructure Job"
+        displayName: "Deploy Infrastructure Job ${{ parameters.instanceNumber }}"
         environment: $(devEnvironment)
         strategy:
           runOnce:
@@ -145,13 +145,13 @@ stages:
                     Write-Host $(deployInfraWebApp.webAppName)
                   displayName: "Echo Logic App Name"
   - stage: DeployLogicApp
-    displayName: "Deploy Logic App"
+    displayName: "Deploy Logic App ${{ parameters.instanceNumber }}"
     dependsOn: DeployInfra
     variables:
       webAppName: $[ stageDependencies.DeployInfra.DeployInfraJob.outputs['deployInfraWebApp.webAppName'] ]
     jobs:
       - deployment: DeployLogicAppJob
-        displayName: "Deploy Logic App Job"
+        displayName: "Deploy Logic App Job ${{ parameters.instanceNumber }}"
         environment: $(devEnvironmentApp)
         strategy:
           runOnce:
