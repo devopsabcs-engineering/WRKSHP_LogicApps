@@ -32,12 +32,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
     minimumTlsVersion: 'TLS1_0'
     allowBlobPublicAccess: false
     networkAcls: {
-      // resourceAccessRules: [
-      //   {
-      //     tenantId: tenant().tenantId
-      //     resourceId: '/subscriptions/64c3d212-40ed-4c6d-a825-6adfbdf25dad/providers/Microsoft.Security/datascanners/StorageDataScanner'
-      //   }
-      // ]
       bypass: 'AzureServices'
       virtualNetworkRules: []
       ipRules: []
@@ -89,8 +83,6 @@ resource office365Connection 'Microsoft.Web/connections@2016-06-01' = {
     // ]
     customParameterValues: {}
     nonSecretParameterValues: {}
-    //createdTime: '2024-11-05T17:50:34.4186011Z'
-    //changedTime: '2024-11-05T19:15:30.5063004Z'
     api: {
       name: office365ConnectionName
       displayName: 'Office 365 Outlook'

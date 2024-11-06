@@ -34,7 +34,7 @@ stages:
                 - checkout: self
                 # azure cli task to login to azure
                 - task: AzureCLI@2
-                  displayName: "Azure Login"
+                  displayName: "deploy infrastructure using bicep"
                   inputs:
                     azureSubscription: "$(serviceConnection)"
                     scriptType: "pscore"
