@@ -1,10 +1,12 @@
 param logicAppName string = 'logic-${uniqueString(resourceGroup().id)}'
-//param office365ConnectionName string = 'office365'
-//param office365ConnectionDisplayName string = 'admin@MngEnvMCAP675646.onmicrosoft.com'
+param office365ConnectionName string = 'office365'
+param office365ConnectionDisplayName string = 'admin@MngEnvMCAP675646.onmicrosoft.com'
 param applicationInsightsName string = 'appi-logic-${uniqueString(resourceGroup().id)}'
 param appServicePlanName string = 'asp-logic-${uniqueString(resourceGroup().id)}'
 param storageAccountName string = 'stlogic${uniqueString(resourceGroup().id)}'
 param location string = resourceGroup().location
+
+var deployOffice365Connection = true // set to false if you don't want to deploy the Office 365 connection
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: applicationInsightsName
@@ -70,30 +72,31 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
 }
 
-// resource office365Connection 'Microsoft.Web/connections@2016-06-01' = {
-//   name: office365ConnectionName
-//   location: location
-//   kind: 'V2'
-//   properties: {
-//     displayName: office365ConnectionDisplayName
-//     // statuses: [
-//     //   {
-//     //     status: 'Connected'
-//     //   }
-//     // ]
-//     customParameterValues: {}
-//     nonSecretParameterValues: {}
-//     api: {
-//       name: office365ConnectionName
-//       displayName: 'Office 365 Outlook'
-//       description: 'Microsoft Office 365 is a cloud-based service that is designed to help meet your organization\'s needs for robust security, reliability, and user productivity.'
-//       iconUri: 'https://connectoricons-prod.azureedge.net/releases/v1.0.1716/1.0.1716.3922/${office365ConnectionName}/icon.png'
-//       brandColor: '#0078D4'
-//       id: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/canadacentral/managedApis/${office365ConnectionName}'
-//       type: 'Microsoft.Web/locations/managedApis'
-//     }
-//   }
-// }
+// will need to authorize the connection MANUALLY
+resource office365Connection 'Microsoft.Web/connections@2016-06-01' = if (deployOffice365Connection) {
+  name: office365ConnectionName
+  location: location
+  kind: 'V2'
+  properties: {
+    displayName: office365ConnectionDisplayName
+    // statuses: [
+    //   {
+    //     status: 'Connected'
+    //   }
+    // ]
+    customParameterValues: {}
+    nonSecretParameterValues: {}
+    api: {
+      name: office365ConnectionName
+      displayName: 'Office 365 Outlook'
+      description: 'Microsoft Office 365 is a cloud-based service that is designed to help meet your organization\'s needs for robust security, reliability, and user productivity.'
+      iconUri: 'https://connectoricons-prod.azureedge.net/releases/v1.0.1716/1.0.1716.3922/${office365ConnectionName}/icon.png'
+      brandColor: '#0078D4'
+      id: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/canadacentral/managedApis/${office365ConnectionName}'
+      type: 'Microsoft.Web/locations/managedApis'
+    }
+  }
+}
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
