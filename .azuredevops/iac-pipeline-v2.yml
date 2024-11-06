@@ -149,11 +149,11 @@ stages:
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
-                    ConnectionType: 'AzureRM'
-                    azureSubscription: '$(serviceConnection)'
-                    appType: 'webApp'
-                    WebAppName: '$(webAppName)'
-                    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                    ConnectionType: "AzureRM"
+                    azureSubscription: "$(serviceConnection)"
+                    appType: "webApp"
+                    WebAppName: "$(webAppName)"
+                    packageForLinux: "$(System.DefaultWorkingDirectory)/**/*.zip"
                     enableCustomDeployment: true
-                    DeploymentType: 'webDeploy'
+                    DeploymentType: "webDeploy"
                     TakeAppOfflineFlag: false
