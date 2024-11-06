@@ -3,11 +3,16 @@ trigger:
 
 pr: none
 
+parameters:
+  - name: instanceNumber
+    type: string
+    default: "007"
+
 variables:
   - name: buildConfiguration
     value: "Release"
   - name: instanceNumber
-    value: "006"
+    value: ${{ parameters.instanceNumber }}
   - name: devEnvironment
     value: WRKSHP_IS_LogicApp_dev_${{ variables.instanceNumber }}
   - name: devEnvironmentApp
