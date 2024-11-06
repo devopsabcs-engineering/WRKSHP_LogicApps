@@ -6,8 +6,10 @@ pr: none
 variables:
   - name: devEnvironment
     value: WRKSHP_IS_LogicApp_dev_006
+  - name: devEnvironmentApp
+    value: WRKSHP_IS_LogicApp_dev_006_logic-app
   - name: vmImage
-    value: ubuntu-latest
+    value: windows-latest
   - name: serviceConnection
     value: "WRKSHP_IS_ME-MngEnvMCAP675646-emknafo-1 (64c3d212-40ed-4c6d-a825-6adfbdf25dad)-4734"
   - name: resourceGroupName
@@ -20,6 +22,9 @@ variables:
     value: "iac-deployment-006"
   - name: projectFile
     value: "src/logic-vvihbnryoetdu/logic-vvihbnryoetdu.csproj"
+
+pool:
+  vmImage: $(vmImage)
 
 stages:
   - stage: Build
@@ -58,8 +63,6 @@ stages:
       - job: BuildJob
         displayName: "Build Job"
         dependsOn: Set_tag_for_version
-        pool:
-          vmImage: $(vmImage)
         steps:
           - checkout: self
           # build and deploy logic app in dotnet 6
@@ -86,8 +89,6 @@ stages:
     jobs:
       - deployment: DeployInfraJob
         displayName: "Deploy Infrastructure Job"
-        pool:
-          vmImage: $(vmImage)
         environment: $(devEnvironment)
         strategy:
           runOnce:
@@ -115,9 +116,7 @@ stages:
     jobs:
       - deployment: DeployLogicAppJob
         displayName: "Deploy Logic App Job"
-        pool:
-          vmImage: $(vmImage)
-        environment: $(devEnvironment)
+        environment: $(devEnvironmentApp)
         strategy:
           runOnce:
             deploy:
