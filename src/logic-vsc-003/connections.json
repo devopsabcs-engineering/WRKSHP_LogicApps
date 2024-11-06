@@ -1,0 +1,17 @@
+{
+  "managedApiConnections": {
+    "office365": {
+      "api": {
+        "id": "/subscriptions/64c3d212-40ed-4c6d-a825-6adfbdf25dad/providers/Microsoft.Web/locations/canadacentral/managedApis/office365"
+      },
+      "connection": {
+        "id": "/subscriptions/64c3d212-40ed-4c6d-a825-6adfbdf25dad/resourceGroups/rg-logic-vsc-003/providers/Microsoft.Web/connections/office365"
+      },
+      "authentication": {
+        "type": "ManagedServiceIdentity"
+      },
+      "connectionRuntimeUrl": "https://4a335b89e4ad77a5.04.common.logic-canadacentral.azure-apihub.net/apim/office365/499b9d58951b4dc4b18322a31fa8ecec"
+    }
+  },
+  "serviceProviderConnections": {}
+}
