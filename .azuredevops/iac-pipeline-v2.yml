@@ -35,9 +35,9 @@ stages:
                 - task: AzureCLI@2
                   displayName: "Azure Login"
                   inputs:
-                    azureSubscription: $(serviceConnection)
-                    scriptType: ps
-                    scriptLocation: inlineScript
+                    azureSubscription: '$(serviceConnection)'
+                    scriptType: 'pscore'
+                    scriptLocation: 'inlineScript'
                     inlineScript: |
                       az account show
                       az group create --name $(resourceGroupName) `
