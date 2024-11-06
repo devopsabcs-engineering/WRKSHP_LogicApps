@@ -137,9 +137,8 @@ stages:
                       Write-Host "##vso[task.setvariable variable=webAppName;isOutput=true]$logicAppName"
                 # echo the logic app name
                 - powershell: |
-                    Write-Host $(webAppName)
-                - powershell: |
                     Write-Host $(deployInfraWebApp.webAppName)
+                  displayName: "Echo Logic App Name"
   - stage: DeployLogicApp
     displayName: "Deploy Logic App"
     dependsOn: DeployInfra
