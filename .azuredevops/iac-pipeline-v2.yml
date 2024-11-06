@@ -153,6 +153,10 @@ stages:
             deploy:
               steps:
                 - checkout: self
+                # echo the logic app name
+                - powershell: |
+                    Write-Host $(webAppName)
+                  displayName: "Echo Logic App Name Again"
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
