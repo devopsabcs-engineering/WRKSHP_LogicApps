@@ -20,8 +20,10 @@ variables:
     value: infra/main.bicep
   - name: deploymentName
     value: "iac-deployment-006"
-  - name: projectFile
-    value: "src/logic-vvihbnryoetdu/logic-vvihbnryoetdu.csproj"
+  #- name: projectFile
+  #  value: "src/logic-vvihbnryoetdu/logic-vvihbnryoetdu.csproj"
+  - name: workingDirectory
+    value: "src/logic-vvihbnryoetdu"
   - name: webAppName
     value: "logic-vvihbnryoetdu"
 
@@ -66,25 +68,36 @@ stages:
         displayName: "Build Job"
         dependsOn: Set_tag_for_version
         steps:
-          - checkout: self
-          # build and deploy logic app in dotnet 6
-          - task: UseDotNet@2
-            displayName: "Use .NET Core sdk 6.x"
+          - checkout: self #REDUNDANT
+            persistCredentials: true
+            fetchDepth: 0
+          - task: gitversion/setup@3
+            enabled: true
+            displayName: "Install GitTools"
             inputs:
-              packageType: "sdk"
-              version: "6.x"
-              installationPath: $(Agent.ToolsDirectory)/dotnet
-          - script: dotnet build $(projectFile)
-            displayName: "Build Logic App"
-          - script: dotnet publish $(projectFile) --output $(Build.ArtifactStagingDirectory)
-            displayName: "Publish Logic App"
-          # publish artifact
-          - task: PublishBuildArtifacts@1
-            displayName: "Publish Artifact"
+              versionSpec: "5.x"
+          - task: gitversion/execute@3
+            enabled: true
+            displayName: "Calculate SemVer"
+          - script: echo current version is $(GitVersion.SemVer)
+            displayName: "Display calculated version"
+          - task: DotNetCoreCLI@2
+            displayName: Build
             inputs:
-              PathtoPublish: $(Build.ArtifactStagingDirectory)
-              ArtifactName: "logic-app"
-              publishLocation: "Container"
+              command: "build"
+              projects: |
+                $(workingDirectory)/*.csproj
+              arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration $(buildConfiguration) -p:Version=$(GitVersion.SemVer) -p:FileVersion=$(GitVersion.AssemblySemFileVer) -p:AssemblyVersion=$(GitVersion.AssemblySemVer)
+          - task: ArchiveFiles@2
+            displayName: "Archive files"
+            inputs:
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+              replaceExistingArchive: true
+          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            artifact: drop
   - stage: DeployInfra
     displayName: "Deploy Infrastructure"
     dependsOn: Build
