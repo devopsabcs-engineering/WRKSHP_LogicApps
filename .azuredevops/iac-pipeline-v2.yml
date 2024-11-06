@@ -46,5 +46,4 @@ stages:
                       # deploy
                       az deployment group create --resource-group $(resourceGroupName) `
                         --template-file $(templateFile) `
-                        --location $(resourceGroupLocation) `
                         --name $(deploymentName)
