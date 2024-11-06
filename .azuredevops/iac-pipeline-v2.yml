@@ -22,6 +22,8 @@ variables:
     value: "iac-deployment-006"
   - name: projectFile
     value: "src/logic-vvihbnryoetdu/logic-vvihbnryoetdu.csproj"
+  - name: webAppName
+    value: "logic-vvihbnryoetdu"
 
 pool:
   vmImage: $(vmImage)
@@ -124,6 +126,7 @@ stages:
                 - checkout: self
                 # download artifact then deploy to standard logic app - app service
                 - task: DownloadBuildArtifacts@0
+                  enabled: false
                   displayName: "Download Artifact"
                   inputs:
                     buildType: "current"
@@ -136,8 +139,8 @@ stages:
                     ConnectionType: "AzureRM"
                     azureSubscription: "$(serviceConnection)"
                     appType: "webApp"
-                    WebAppName: "logic-app-$(Build.BuildId)"
-                    package: "$(System.ArtifactsDirectory)/logic-app"
+                    WebAppName: "$(webAppName)"
+                    package: "$(Pipeline.Workspace)/logic-app"
                     enableCustomDeployment: true
                     deploymentMethod: "auto"
                     ResourceGroupName: "$(resourceGroupName)"
