@@ -164,6 +164,56 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
       http20Enabled: false
       functionAppScaleLimit: 0
       minimumElasticInstanceCount: 1
+      appSettings: [
+        {
+          name: 'APP_KIND'
+          value: 'workflowApp'
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: applicationInsights.properties.InstrumentationKey
+        }
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: applicationInsights.properties.ConnectionString
+        }
+        {
+          name: 'AzureFunctionsJobHost__extensionBundle__id'
+          value: 'Microsoft.Azure.Functions.ExtensionBundle.Workflows'
+        }
+        {
+          name: 'AzureFunctionsJobHost__extensionBundle__version'
+          value: '[1.*, 2.0.0)'
+        }
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'dotnet'
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: logicAppName
+        }
+        {
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: '~18'
+        }
+        // {
+        //   name: 'FUNCTIONS_V2_COMPATIBILITY_MODE'
+        //   value: 'true'
+        // }
+      ]
     }
     scmSiteAlsoStopped: false
     clientAffinityEnabled: false
