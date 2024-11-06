@@ -4,7 +4,7 @@ pr: none
 
 variables:
   - name: devEnvironment
-    value: WRKSHP_IS_LogicApp_dev
+    value: WRKSHP_IS_LogicApp_dev_006
   - name: vmImage
     value: ubuntu-latest
   - name: serviceConnection
@@ -14,13 +14,43 @@ variables:
   - name: resourceGroupLocation
     value: "canadacentral"
   - name: templateFile
-    value: infra/ExportedTemplate-rg-logic-vsc-003/template.bicep
+    value: infra/main.bicep
   - name: deploymentName
     value: "iac-deployment-006"
+  - name: projectFile
+    value: "src/logic-vvihbnryoetdu/logic-vvihbnryoetdu.csproj"
 
 stages:
+  - stage: Build
+    displayName: "Build"
+    jobs:
+      - job: BuildJob
+        displayName: "Build Job"
+        pool:
+          vmImage: $(vmImage)
+        steps:
+          - checkout: self
+          # build and deploy logic app in dotnet 6
+          - task: UseDotNet@2
+            displayName: "Use .NET Core sdk 6.x"
+            inputs:
+              packageType: "sdk"
+              version: "6.x"
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+          - script: dotnet build $(projectFile)
+            displayName: "Build Logic App"
+          - script: dotnet publish $(projectFile) --output $(Build.ArtifactStagingDirectory)
+            displayName: "Publish Logic App"
+          # publish artifact
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish Artifact"
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: "logic-app"
+              publishLocation: "Container"
   - stage: DeployInfra
     displayName: "Deploy Infrastructure"
+    dependsOn: Build
     jobs:
       - deployment: DeployInfraJob
         displayName: "Deploy Infrastructure Job"
