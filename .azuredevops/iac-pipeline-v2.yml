@@ -142,21 +142,17 @@ stages:
   - stage: DeployLogicApp
     displayName: "Deploy Logic App"
     dependsOn: DeployInfra
+    variables:
+      webAppName: $[ stageDependencies.DeployInfra.DeployInfraJob.outputs['deployInfraWebApp.webAppName'] ]
     jobs:
       - deployment: DeployLogicAppJob
         displayName: "Deploy Logic App Job"
         environment: $(devEnvironmentApp)
-        variables:
-          webAppName: $[ stageDependencies.DeployInfra.DeployInfraJob.outputs['deployInfraWebApp.webAppName'] ]
         strategy:
           runOnce:
             deploy:
               steps:
                 - checkout: self
-                # echo the logic app name
-                - powershell: |
-                    Write-Host $(webAppName)
-                  displayName: "Echo Logic App Name Again"
                 - task: AzureCLI@2
                   displayName: "Retrieve Logic App Name"
                   name: retrieveLogicAppName
@@ -177,6 +173,10 @@ stages:
                 - powershell: |
                     Write-Host $(retrieveLogicAppName.webAppName)
                   displayName: "Echo Logic App Name"
+                # echo the logic app name
+                - powershell: |
+                    Write-Host $(webAppName)
+                  displayName: "Echo Logic App Name Again"
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Deploy Logic App"
                   inputs:
