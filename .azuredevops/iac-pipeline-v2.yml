@@ -26,8 +26,8 @@ variables:
     value: "iac-deployment-${{ variables.instanceNumber }}"
   - name: workingDirectory
     value: "src/logic-vvihbnryoetdu"
-  - name: webAppName
-    value: "logic-vvihbnryoetdu" # logic app name - get this from outputs of infra deployment
+  #- name: webAppName
+  #  value: "logic-vvihbnryoetdu" # logic app name - get this from outputs of infra deployment
 
 pool:
   vmImage: $(vmImage)
@@ -134,10 +134,12 @@ stages:
                         --query properties.outputs.logicAppName.value `
                         -o tsv
                       echo $logicAppName
-                      echo "##vso[task.setvariable variable=webAppName;isOutput=true]$logicAppName"
+                      Write-Host "##vso[task.setvariable variable=webAppName;isOutput=true]$logicAppName"
                 # echo the logic app name
-                - script: echo $(deployInfraWebApp.outputs['webAppName'])
-                  displayName: "Echo Logic App Name"
+                - powershell: |
+                    Write-Host $(webAppName)
+                - powershell: |
+                    Write-Host $(deployInfraWebApp.webAppName)
   - stage: DeployLogicApp
     displayName: "Deploy Logic App"
     dependsOn: DeployInfra
@@ -145,6 +147,8 @@ stages:
       - deployment: DeployLogicAppJob
         displayName: "Deploy Logic App Job"
         environment: $(devEnvironmentApp)
+        variables:
+          webAppName: $[ stageDependencies.DeployInfra.DeployInfraJob.outputs['deployInfraWebApp.webAppName'] ]
         strategy:
           runOnce:
             deploy:
