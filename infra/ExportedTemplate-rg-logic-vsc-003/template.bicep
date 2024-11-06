@@ -1,6 +1,6 @@
 param logicAppName string = 'logic-${uniqueString(resourceGroup().id)}'
-param office365ConnectionName string = 'office365'
-param office365ConnectionDisplayName string = 'Office 365 (admin@MngEnvMCAP675646.onmicrosoft.com)'
+//param office365ConnectionName string = 'office365'
+//param office365ConnectionDisplayName string = 'admin@MngEnvMCAP675646.onmicrosoft.com'
 param applicationInsightsName string = 'appi-logic-${uniqueString(resourceGroup().id)}'
 param appServicePlanName string = 'asp-logic-${uniqueString(resourceGroup().id)}'
 param storageAccountName string = 'stlogic${uniqueString(resourceGroup().id)}'
@@ -70,30 +70,30 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
 }
 
-resource office365Connection 'Microsoft.Web/connections@2016-06-01' = {
-  name: office365ConnectionName
-  location: location
-  kind: 'V2'
-  properties: {
-    displayName: office365ConnectionDisplayName
-    // statuses: [
-    //   {
-    //     status: 'Connected'
-    //   }
-    // ]
-    customParameterValues: {}
-    nonSecretParameterValues: {}
-    api: {
-      name: office365ConnectionName
-      displayName: 'Office 365 Outlook'
-      description: 'Microsoft Office 365 is a cloud-based service that is designed to help meet your organization\'s needs for robust security, reliability, and user productivity.'
-      iconUri: 'https://connectoricons-prod.azureedge.net/releases/v1.0.1716/1.0.1716.3922/${office365ConnectionName}/icon.png'
-      brandColor: '#0078D4'
-      id: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/canadacentral/managedApis/${office365ConnectionName}'
-      type: 'Microsoft.Web/locations/managedApis'
-    }
-  }
-}
+// resource office365Connection 'Microsoft.Web/connections@2016-06-01' = {
+//   name: office365ConnectionName
+//   location: location
+//   kind: 'V2'
+//   properties: {
+//     displayName: office365ConnectionDisplayName
+//     // statuses: [
+//     //   {
+//     //     status: 'Connected'
+//     //   }
+//     // ]
+//     customParameterValues: {}
+//     nonSecretParameterValues: {}
+//     api: {
+//       name: office365ConnectionName
+//       displayName: 'Office 365 Outlook'
+//       description: 'Microsoft Office 365 is a cloud-based service that is designed to help meet your organization\'s needs for robust security, reliability, and user productivity.'
+//       iconUri: 'https://connectoricons-prod.azureedge.net/releases/v1.0.1716/1.0.1716.3922/${office365ConnectionName}/icon.png'
+//       brandColor: '#0078D4'
+//       id: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/canadacentral/managedApis/${office365ConnectionName}'
+//       type: 'Microsoft.Web/locations/managedApis'
+//     }
+//   }
+// }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
@@ -161,10 +161,10 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
           name: 'APP_KIND'
           value: 'workflowApp'
         }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: applicationInsights.properties.InstrumentationKey
-        }
+        // {
+        //   name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+        //   value: applicationInsights.properties.InstrumentationKey
+        // }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: applicationInsights.properties.ConnectionString
@@ -201,18 +201,18 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
           value: '~18'
         }
-        {
-          name: 'WORKFLOWS_SUBSCRIPTION_ID'
-          value: subscription().subscriptionId
-        }
-        {
-          name: 'WORKFLOWS_RESOURCE_GROUP_NAME'
-          value: resourceGroup().name
-        }
-        {
-          name: 'WORKFLOWS_LOCATION_NAME'
-          value: location
-        }
+        // {
+        //   name: 'WORKFLOWS_SUBSCRIPTION_ID'
+        //   value: subscription().subscriptionId
+        // }
+        // {
+        //   name: 'WORKFLOWS_RESOURCE_GROUP_NAME'
+        //   value: resourceGroup().name
+        // }
+        // {
+        //   name: 'WORKFLOWS_LOCATION_NAME'
+        //   value: location
+        // }
         // {
         //   name: 'FUNCTIONS_V2_COMPATIBILITY_MODE'
         //   value: 'true'
