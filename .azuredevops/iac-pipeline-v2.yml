@@ -196,12 +196,12 @@ stages:
                     DeploymentType: "webDeploy"
                     TakeAppOfflineFlag: false
   - stage: TestApp
-    displayName: Test App stage
+    displayName: Test App stage ${{ parameters.instanceNumber }}
     dependsOn: DeployLogicApp
     condition: succeeded()
     jobs:
       - job: TestApp
-        displayName: Test App
+        displayName: Test App Job ${{ parameters.instanceNumber }}
         steps:
           - checkout: self
           - task: AzureCLI@2
