@@ -33,6 +33,8 @@ variables:
     value: "src/logic-vvihbnryoetdu" # path to the project
   - name: artifactName
     value: "drop"
+  - name: subscriptionId
+    value: "64c3d212-40ed-4c6d-a825-6adfbdf25dad"
 
 pool:
   vmImage: $(vmImage)
@@ -193,3 +195,20 @@ stages:
                     enableCustomDeployment: true
                     DeploymentType: "webDeploy"
                     TakeAppOfflineFlag: false
+  - stage: TestApp
+    displayName: Test App stage
+    dependsOn: DeployLogicApp
+    condition: succeeded()
+    jobs:
+      - job: TestApp
+        displayName: Test App
+        steps:
+          - checkout: self
+          - task: AzureCLI@2
+            displayName: "test app deployment"
+            inputs:
+              azureSubscription: "$(serviceConnection)"
+              scriptType: "pscore"
+              scriptLocation: "scriptPath"
+              scriptPath: "Validate-Deployment.ps1"
+              arguments: -instanceNumber $(instanceNumber) -subscriptionId $(subscriptionId)
