@@ -110,6 +110,7 @@ jobs:
           # set the logic app name as an environment variable
           #echo "AZURE_FUNCTIONAPP_NAME=$logicAppName" >> $GITHUB_ENV
           echo "AZURE_FUNCTIONAPP_NAME=$logicAppName" | Out-File -FilePath $env:GITHUB_ENV -Append
+      # deploy logic app
       - name: "Run Azure Functions Action"
         uses: Azure/functions-action@v1
         id: fa
