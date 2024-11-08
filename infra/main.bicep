@@ -220,6 +220,10 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
           name: 'WORKFLOWS_CONNECTION_RUNTIME_URL'
           value: office365Connection.properties.connectionRuntimeUrl
         }
+        {
+          name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
+          value: 'true'
+        }
         // {
         //   name: 'FUNCTIONS_V2_COMPATIBILITY_MODE'
         //   value: 'true'
