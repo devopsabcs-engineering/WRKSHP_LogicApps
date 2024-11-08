@@ -1,10 +1,30 @@
-# create resource group
-$resourceGroupName = "rg-logicapp-001"
-$location = "Canada Central"
-$deploymentName = "logicapp-001"
-$templateFilePath = "./src/logic-app-as2-send-receive/main.bicep"
+param (
+    [Parameter()]
+    [string]
+    $instanceNumber = "006",
+    [Parameter()]
+    [string]
+    $resourceGroupName = "rg-iac-pipeline-$instanceNumber",
+    [Parameter()]
+    [string]
+    $deploymentName = "iac-deployment-$instanceNumber",
+    [Parameter()]
+    [string]
+    $templateFilePath = "infra/main.bicep",
+    [Parameter()]
+    [string]
+    $location = "canadacentral"
+)
 
-az group create --name $resourceGroupName --location "$location"
+# echo parameters
+Write-Output "instanceNumber: $instanceNumber"
+Write-Output "resourceGroupName: $resourceGroupName"
+Write-Output "deploymentName: $deploymentName"
+Write-Output "templateFilePath: $templateFilePath"
+Write-Output "location: $location"
+
+az group create --name $resourceGroupName `
+    --location "$location"
 
 az deployment group create --resource-group $resourceGroupName `
     --name $deploymentName `

@@ -217,7 +217,7 @@ resource logicApp 'Microsoft.Web/sites@2023-12-01' = {
           value: location
         }
         {
-          name: 'WORKFLOWS_CONNECTION_RUNTIME_URL' 
+          name: 'WORKFLOWS_CONNECTION_RUNTIME_URL'
           value: office365Connection.properties.connectionRuntimeUrl
         }
         // {
