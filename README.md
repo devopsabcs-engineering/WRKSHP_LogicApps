@@ -44,7 +44,7 @@ By the end of this workshop, participants will be able to:
 
 ## Contact Information
 For any questions or feedback, please reach out to:
-- **Instructor Name:** [Your Name]
+- **Instructor Name:** Emmanuel Knafo
 - **Title:** Senior Cloud Solutions Architect
 - **Company:** Microsoft
 
