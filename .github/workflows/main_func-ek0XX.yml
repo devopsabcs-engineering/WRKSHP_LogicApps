@@ -16,7 +16,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "src/logic-vvihbnryoetdu" # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: "8.0.x" # set this to the dotnet version to use
+  DOTNET_VERSION: "6.0.x" # set this to the dotnet version to use
   RESOURCE_GROUP: "rg-iac-pipeline-${{ inputs.instanceNumber }}" # set this to your Azure Resource Group name
   LOCATION: "canadacentral" # set this to the Azure region where your resources will be deployed
   NAME_SUFFIX: "${{ inputs.instanceNumber }}" # set this to a unique suffix for resource names
