@@ -1,14 +1,15 @@
 name: Build and deploy .NET Core application to Function App logic-vltr7xjs5bdfq
 on:
-  push:
-    branches:
-    - main
+  #push:
+  #  branches:
+  #  - main
+  workflow_dispatch:
 env:
   AZURE_FUNCTIONAPP_NAME: logic-vltr7xjs5bdfq
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: .\published
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: src/logic-vvihbnryoetdu
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
-  WORKING_DIRECTORY: .
+  WORKING_DIRECTORY: src/logic-vvihbnryoetdu
 jobs:
   build:
     runs-on: windows-latest
