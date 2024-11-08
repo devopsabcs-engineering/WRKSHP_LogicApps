@@ -1,0 +1,113 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy dotnet core app to Azure Function App - func-ek001
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "src" # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: "8.0.x" # set this to the dotnet version to use
+  AZURE_FUNCTIONAPP_NAME: "func-ek002" # set this to your Azure Function App name
+  RESOURCE_GROUP: "rg-ek002" # set this to your Azure Resource Group name
+  APIM_GATEWAY_URL: "https://apim-ek002.azure-api.net" # set this to your Azure API Management Gateway URL
+  APIM_SERVICE_NAME: "apim-ek002" # set this to your Azure API Management Service Name
+  LOCATION: "canadacentral" # set this to the Azure region where your resources will be deployed
+  NAME_SUFFIX: "ek002" # set this to a unique suffix for resource names
+  PUBLISHER_EMAIL: "admin@MngEnvMCAP675646.onmicrosoft.com"
+  PUBLISHER_NAME: "Sys Admin"
+
+# Permission can be added at job level or workflow level
+permissions:
+  id-token: write #This is required for requesting the JWT
+  contents: write # This is required to create/push the new git tag
+
+jobs:
+  deploy-infra:
+    runs-on: windows-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: write # This is required to create/push the new git tag
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # run powershell core script Deploy-Infrastructure.ps1
+      - name: Deploy Infrastructure
+        shell: pwsh
+        run: |
+          ./New-Deployment.ps1 -location "${{ env.LOCATION }}" `
+            -nameSuffix "${{ env.NAME_SUFFIX }}" `
+            -publisherEmail "${{ env.PUBLISHER_EMAIL }}" `
+            -publisherName "${{ env.PUBLISHER_NAME }}" `
+  build-and-deploy:
+    runs-on: windows-latest
+    needs: deploy-infra
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: write # This is required to create/push the new git tag
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.0.0
+        with:
+          versionSpec: "5.x"
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3.0.0
+      - name: Display GitVersion outputs
+        run: |
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+      - name: Create tag
+        uses: actions/github-script@v3
+        with:
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/v${{ steps.gitversion.outputs.semVer }}",
+              sha: context.sha
+            })
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: "Resolve Project Dependencies Using Dotnet"
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output -p:Version=${{ steps.gitversion.outputs.semVer }} -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }}
+          popd
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: "Run Azure Functions Action"
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: "${{ env.AZURE_FUNCTIONAPP_NAME }}"
+          slot-name: "Production"
+          package: "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output"
+      # run powershell core script Validate-Deployment.ps1
+      - name: Validate Deployment
+        shell: pwsh
+        run: |
+          ./Validate-Deployment.ps1 -apimGatewayUrl ${{ env.APIM_GATEWAY_URL }} `
+            -resourceGroup ${{ env.RESOURCE_GROUP }} `
+            -apimServiceName ${{ env.APIM_SERVICE_NAME }} `
+            -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
