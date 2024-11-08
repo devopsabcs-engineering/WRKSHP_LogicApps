@@ -119,6 +119,22 @@ jobs:
           app-name: "${{ env.AZURE_FUNCTIONAPP_NAME }}"
           slot-name: "Production"
           package: "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output"
+  validate-deployment:
+    runs-on: windows-latest
+    needs: build-and-deploy
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: write # This is required to create/push the new git tag
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       # run powershell core script Validate-Deployment.ps1
       - name: Validate Deployment
         shell: pwsh
